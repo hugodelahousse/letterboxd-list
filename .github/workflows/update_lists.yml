@@ -1,0 +1,26 @@
+name: Update Lists
+on:
+  schedule:
+    - cron:  '0 * * * *'
+
+jobs:
+  pytest:
+    name: pytest
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Install
+      uses: abatilo/actions-poetry@v1.1.0
+      with:
+        python_version: 3.8.0
+        poetry_version: 1.0.0
+        args: install
+    - name: Run pytest
+      uses: abatilo/actions-poetry@v1.1.0
+      with:
+        python_version: 3.8.0
+        poetry_version: 1.0.0
+        env: # Or as an environment variable
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GIST_ID: ${{ secrets.GIST_ID }}
+        args: run letterboxd-to-gist --access-token $ACCESS_TOKEN --gist-id $GIST_ID
