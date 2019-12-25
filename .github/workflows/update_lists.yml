@@ -3,6 +3,8 @@ on:
   schedule:
     - cron:  '0 * * * *'
 
+  repository_dispatch:
+
 jobs:
   pytest:
     name: pytest
