@@ -11,18 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: Install
-      uses: abatilo/actions-poetry@v1.1.0
+    - uses: actions/setup-python@v1
       with:
-        python_version: 3.8.0
-        poetry_version: 1.0.0
-        args: install
-    - name: Run pytest
-      uses: abatilo/actions-poetry@v1.1.0
+        python-version: '3.8'
+    - name: Install Poetry
+      uses: dschep/install-poetry-action@v1.2
+    - name: Update Lists
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         GIST_ID: ${{ secrets.GIST_ID }}
-      with:
-        python_version: 3.8.0
-        poetry_version: 1.0.0
-        args: run letterboxd-to-gist --access-token $ACCESS_TOKEN --gist-id $GIST_ID
+      run: |
+        poetry install
+        poetry run letterboxd-to-gist --access-token $ACCESS_TOKEN --gist-id $GIST_ID
