@@ -13,24 +13,11 @@ logger.setLevel("INFO")
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
 
-def divide_chunks(l, n):
-    for i in range(0, len(l), n):
-        yield l[i : i + n]
-
-
 def list_to_markdown(letterboxd_list: List[Any]):
-    result = ""
-    for chunk in divide_chunks(letterboxd_list, 4):
-        result += "|" + "|".join(f"{movie['title']}" for movie in chunk) + "|\n"
-        result += "|" + "|".join(":--:" for _ in range(len(chunk))) + "|\n"
-        result += (
-            "|"
-            + "|".join(f"![{movie['title']}]({movie['poster_url']})" for movie in chunk)
-            + "|\n"
-        )
-        result += "\n"
-
-    return result
+    return "\n".join(
+        f"[![{movie['title']}]({movie['poster_url']} \"{movie['title']}\")](https://www.imdb.com/title/{movie['imdb_id']}/)"
+        for movie in letterboxd_list
+    )
 
 
 def update_gist(
