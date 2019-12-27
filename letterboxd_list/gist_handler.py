@@ -15,7 +15,7 @@ logger.addHandler(logging.StreamHandler(sys.stdout))
 
 def list_to_markdown(letterboxd_list: List[Any]):
     return "\n".join(
-        f"[![{movie['title']}]({movie['poster_url']} \"{movie['title']}\")](https://www.imdb.com/title/{movie['imdb_id']}/)"
+        f"[<img src=\"{movie['poster_url']}\" width=\"170px\" height=\"255px\" />](https://www.imdb.com/title/{movie['imdb_id']}/)"
         for movie in letterboxd_list
     )
 
