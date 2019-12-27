@@ -11,15 +11,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+
     - uses: actions/setup-python@v1
       with:
         python-version: '3.8'
+
     - name: Install Poetry
       uses: dschep/install-poetry-action@v1.2
+
+    - name: Cache Poetry virtualenv
+      uses: actions/cache@v1
+      id: cache
+      with:
+        path: ~/.cache
+        key: poetry-${{ hashFiles('**/poetry.lock') }}
+        restore-keys: poetry-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Set Poetry config
+      run: |
+        poetry config cache-dir ~/.cache
+
+    - name: Install Dependencies
+      run: poetry install --no-dev
+      if: steps.cache.outputs.cache-hit != 'true'
+
     - name: Update Lists
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         GIST_ID: ${{ secrets.GIST_ID }}
-      run: |
-        poetry install
-        poetry run letterboxd-to-gist --access-token $ACCESS_TOKEN --gist-id $GIST_ID
+      run: poetry run letterboxd-to-gist --access-token $ACCESS_TOKEN --gist-id $GIST_ID
