@@ -40,7 +40,7 @@ def update_gist(
         except ValueError:
             pass
 
-    files = {filename: InputFileContent(json.dumps(letterboxd_list, indent=""))}
+    files = {filename: InputFileContent(json.dumps(letterboxd_list, indent=2))}
 
     if posters:
         files[posters_filename] = InputFileContent(list_to_markdown(letterboxd_list))

@@ -21,5 +21,5 @@ def gist_cache(gist: Gist, filename: str):
     finally:
         new_cache = cache.dump()
         if new_cache != original_cache:
-            content = json.dumps(new_cache, indent="")
+            content = json.dumps(new_cache, indent=2)
             gist.edit(files={filename: InputFileContent(content)})
